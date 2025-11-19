@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Estadístico - Uniguajira</title>
+    <link rel="icon" type="image/png" href="assets/imag/ICO.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <svg class="header-decoration-waves" viewBox="0 0 200 200" preserveAspectRatio="none">
+                <path d="M 0 20 Q 15 0, 30 20 T 60 20 T 90 20 T 120 20 T 150 20 T 180 20 T 210 20" 
+                      fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+                <path d="M 0 35 Q 15 15, 30 35 T 60 35 T 90 35 T 120 35 T 150 35 T 180 35 T 210 35" 
+                      fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+                <path d="M 0 50 Q 15 30, 30 50 T 60 50 T 90 50 T 120 50 T 150 50 T 180 50 T 210 50" 
+                      fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+                <path d="M 0 65 Q 15 45, 30 65 T 60 65 T 90 65 T 120 65 T 150 65 T 180 65 T 210 65" 
+                      fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+                <path d="M 0 80 Q 15 60, 30 80 T 60 80 T 90 80 T 120 80 T 150 80 T 180 80 T 210 80" 
+                      fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+            </svg>
+            
+            <svg class="header-decoration-curves" viewBox="0 0 120 220" preserveAspectRatio="xMaxYMin meet">
+                <path d="M 10 0 Q 60 20, 10 40 Q 60 60, 10 80 Q 60 100, 10 120 Q 60 140, 10 160 Q 60 180, 10 200" 
+                      fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+                <path d="M 20 0 Q 70 20, 20 40 Q 70 60, 20 80 Q 70 100, 20 120 Q 70 140, 20 160 Q 70 180, 20 200" 
+                      fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+                <path d="M 30 0 Q 80 20, 30 40 Q 80 60, 30 80 Q 80 100, 30 120 Q 80 140, 30 160 Q 80 180, 30 200" 
+                      fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+                <path d="M 40 0 Q 90 20, 40 40 Q 90 60, 40 80 Q 90 100, 40 120 Q 90 140, 40 160 Q 90 180, 40 200" 
+                      fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+                <path d="M 50 0 Q 100 20, 50 40 Q 100 60, 50 80 Q 100 100, 50 120 Q 100 140, 50 160 Q 100 180, 50 200" 
+                      fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+                <path d="M 60 0 Q 110 20, 60 40 Q 110 60, 60 80 Q 110 100, 60 120 Q 110 140, 60 160 Q 110 180, 60 200" 
+                      fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+            </svg>
+            
+            <div class="header-decoration-circle header-circle-1"></div>
+            <div class="header-decoration-circle header-circle-2"></div>
+            
+            <div class="header-content">
+                <div>
+                    <h1 class="header-title">ANÁLISIS <span class="estadistico">ESTADÍSTICO</span></h1>
+                    <p class="header-subtitle">Proyecto Final - Estadística I | Ingeniería de Sistemas</p>
+                </div>
+                <nav class="header-nav">
+                    <button class="nav-button active" onclick="showView('input')">Inicio</button>
+                    <button class="nav-button" onclick="toggleManualPanel()">Manual de Usuario</button>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div id="view-input" class="view active">
+                <h2 class="section-title">INGRESO DE DATOS</h2>
+                
+                <div class="input-grid">
+                    <div class="input-panel">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" id="btn-manual" onclick="toggleInput('manual')">
+                                Manual
+                            </button>
+                            <button class="tab-button" id="btn-file" onclick="toggleInput('file')">
+                                Archivo
+                            </button>
+                        </div>
+
+                        <div id="input-manual-container">
+                            <textarea 
+                                id="data-input" 
+                                class="data-input" 
+                                placeholder="10, 90, 22..."
+                                oninput="mostrarCampoContexto()"
+                            ></textarea>
+                        </div>
+
+                        <div id="input-file-container" class="hidden">
+                            <p style="text-align: center; margin-bottom: 1.5rem; color: var(--color-text-medium); font-size: 0.95rem;">
+                                ¿Qué archivo desea subir?
+                            </p>
+                            <label class="upload-area" for="file-upload">
+                                <div class="upload-icon">
+                                    <i class="fa-solid fa-arrow-down"></i>
+                                </div>
+                                <p style="font-weight: 600; margin-bottom: 0; color: var(--color-text-dark); font-size: 0.9rem;">
+                                    Sube un archivo CSV, TXT o XLSX
+                                </p>
+                                <input type="file" id="file-upload" class="hidden" accept=".csv,.txt,.xlsx,.xls,.json" onchange="procesarArchivoUnificado(this)">
+                            </label>
+                        </div>
+
+                        <div id="excel-preview-container" class="hidden" style="margin-top: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <h4 style="margin: 0; color: var(--color-text-dark);">
+                                    <i class="fa-solid fa-table"></i> Vista Previa del Excel
+                                </h4>
+                                <button onclick="limpiarExcelPreview()" style="background: #BC8389; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.85rem;">
+                                    <i class="fa-solid fa-times"></i> Cerrar
+                                </button>
+                            </div>
+                            <p id="excel-filename" style="font-size: 0.85rem; color: var(--color-text-medium); margin-bottom: 0.8rem;"></p>
+                            <div style="overflow-x: auto; max-height: 250px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; background: white;">
+                                <table id="excel-preview-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                                    <thead id="excel-thead"></thead>
+                                    <tbody id="excel-tbody"></tbody>
+                                </table>
+                            </div>
+                            <div id="excel-column-selector" style="margin-top: 1rem;">
+                                <p style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--color-text-dark);">
+                                    <strong>Selecciona la columna a analizar:</strong>
+                                </p>
+                                <div id="column-buttons" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+                            </div>
+                        </div>
+
+                        <div class="context-input-section" id="context-section" style="display: none;">
+                            <h4>Contexto de los datos (opcional)</h4>
+                            <p style="font-size: 0.85rem; color: #8A7A7A; margin-bottom: 0.7rem;">
+                                Describe qué representan estos datos para un análisis más preciso
+                            </p>
+                            <div class="context-input-wrapper">
+                                <textarea 
+                                    id="data-context" 
+                                    class="context-textarea" 
+                                    placeholder="Ej: Calificaciones de estudiantes en el examen final..."
+                                ></textarea>
+                                <button class="btn-generate-context" onclick="generarContextoIA()" id="btn-gen-context">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    Generar con IA
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn-icon" onclick="limpiarDatos()" title="Borrar datos">
+                                <i class="fa-solid fa-eraser"></i>
+                            </button>
+                            <button class="btn-icon" onclick="cargarDemo()" title="Datos arbitrarios">
+                                <i class="fa-solid fa-shuffle"></i>
+                            </button>
+                            <button class="btn-primary" onclick="ejecutarAnalisis()">
+                                Ejecutar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="info-card">
+                            <h3>INFORMACIÓN PROYECTO</h3>
+                            <p style="font-size: 0.85rem; margin-bottom: 1rem; opacity: 0.9;">
+                                <strong>Equipo:</strong> Maria José Cujia / Jose Barreto
+                            </p>
+                            <p style="font-size: 0.8rem; margin-bottom: 1.5rem; opacity: 0.85;">
+                                Esta aplicación permite analizar conjuntos de datos mediante:
+                            </p>
+                            <ul class="info-list">
+                                <li>Ingreso manual o desde archivos (CSV, TXT, Excel)</li>
+                                <li>Procesamiento inteligente de Excel con pandas</li>
+                                <li>Vista previa de tablas y selección de columnas</li>
+                                <li>Detección automática de tipo de datos</li>
+                                <li>Cálculo de estadísticas descriptivas</li>
+                                <li>Visualizaciones contextuales personalizadas</li>
+                                <li>Generación de tablas de frecuencia</li>
+                                <li>Exportación de informes PDF ejecutivos</li>
+                                <li>Asistente de IA para interpretación de datos</li>
+                            </ul>
+                            <p style="font-size: 0.75rem; margin-top: 1.5rem; opacity: 0.8;">
+                                Docente: William C. Gutierrez Mejía
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-results" class="view">
+                <h2 class="section-title">RESULTADOS OBTENIDOS</h2>
+                
+                <div class="data-type-badge" id="badge-tipo-dato">
+                    Cuantitativa discreta
+                </div>
+                
+                <div class="results-grid">
+                    <div class="stat-card" style="--card-color: var(--color-card-media);">
+                        <div class="stat-card-header">
+                            <span class="stat-label">Media</span>
+                            <div class="info-icon" onclick="mostrarInfoEstadistica('media')" title="Ver información">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="val-media">--</div>
+                    </div>
+
+                    <div class="stat-card" style="--card-color: var(--color-card-mediana);">
+                        <div class="stat-card-header">
+                            <span class="stat-label">Mediana</span>
+                            <div class="info-icon" onclick="mostrarInfoEstadistica('mediana')" title="Ver información">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="val-mediana">--</div>
+                    </div>
+
+                    <div class="stat-card" style="--card-color: var(--color-card-moda);">
+                        <div class="stat-card-header">
+                            <span class="stat-label">Moda</span>
+                            <div class="info-icon" onclick="mostrarInfoEstadistica('moda')" title="Ver información">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="val-moda">--</div>
+                    </div>
+
+                    <div class="stat-card" style="--card-color: var(--color-card-rango);">
+                        <div class="stat-card-header">
+                            <span class="stat-label">Rango</span>
+                            <div class="info-icon" onclick="mostrarInfoEstadistica('rango')" title="Ver información">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="val-rango">--</div>
+                    </div>
+
+                    <div class="stat-card" style="--card-color: var(--color-card-varianza);">
+                        <div class="stat-card-header">
+                            <span class="stat-label">Varianza</span>
+                            <div class="info-icon" onclick="mostrarInfoEstadistica('varianza')" title="Ver información">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="val-varianza">--</div>
+                    </div>
+
+                    <div class="stat-card" style="--card-color: var(--color-card-desviacion);">
+                        <div class="stat-card-header">
+                            <span class="stat-label">Desviación</span>
+                            <div class="info-icon" onclick="mostrarInfoEstadistica('desviacion')" title="Ver información">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="val-desviacion">--</div>
+                    </div>
+                </div>
+
+                <div class="conclusions-box">
+                    <h3>Conclusiones</h3>
+                    <p class="conclusions-text" id="analisis-texto">
+                        Los resultados obtenidos...
+                    </p>
+                </div>
+
+                <div class="conclusions-box" id="ai-conclusion-box" style="display: none; background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%); border-left: 4px solid #6B8E6B;">
+                    <h3 style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color: #6B8E6B;"></i>
+                        Análisis con IA
+                    </h3>
+                    <p class="conclusions-text" id="ai-analisis-texto" style="font-style: italic; color: #2C4A2C;">
+                        Generando análisis inteligente...
+                    </p>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn-primary" onclick="showView('visualizations')" style="padding: 1rem 3rem;">
+                        Ver Representaciones <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="view-visualizations" class="view">
+                <h2 class="section-title">REPRESENTACIONES</h2>
+                
+                <div class="visualizations-grid">
+                    <div class="chart-container" style="--chart-bg: #F5E6D3;">
+                        <h3 class="chart-title">HISTOGRAMA: DISTRIBUCIÓN</h3>
+                        <canvas id="mainChart" class="chart-canvas"></canvas>
+                    </div>
+
+                    <div class="chart-container" style="--chart-bg: #FFF9E6;">
+                        <h3 class="chart-title">GRÁFICO CIRCULAR</h3>
+                        <canvas id="pieChart" class="chart-canvas"></canvas>
+                    </div>
+
+                    <div class="chart-container" style="--chart-bg: #B6D7A8;">
+                        <h3 class="chart-title">DIAGRAMA DE CAJA Y BIGOTES</h3>
+                        <div style="display: flex; justify-content: center; width: 100%; padding: 0 2rem;">
+                            <canvas id="boxplot" class="chart-canvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-container" style="--chart-bg: #E8B4BC;">
+                        <h3 class="chart-title">TABLA DE FRECUENCIA</h3>
+                        <div style="overflow-x: auto; max-height: 300px; overflow-y: auto;">
+                            <table id="frequency-table">
+                                <thead>
+                                    <tr>
+                                        <th>Dato</th>
+                                        <th>fi</th>
+                                        <th>Fi</th>
+                                        <th>hi</th>
+                                        <th>%</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="frequency-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+                    <button class="btn-primary" onclick="showView('results')" style="padding: 1rem 2rem; background: #D9A590;">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Resultados
+                    </button>
+                    <button class="btn-primary" onclick="exportarPDF()" style="padding: 1rem 2rem;">
+                        <i class="fa-solid fa-file-pdf"></i> Exportar Informe
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <div class="manual-panel" id="manual-panel">
+            <div class="manual-panel-header">
+                <h3>Manual de Usuario</h3>
+                <button class="manual-panel-close" onclick="toggleManualPanel()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="manual-panel-content">
+                <div class="manual-intro">
+                    <p>Bienvenido al sistema de análisis estadístico. Esta guía le ayudará a utilizar todas las funcionalidades de la aplicación.</p>
+                </div>
+                
+                <div class="manual-step">
+                    <div class="manual-step-header">
+                        <span class="manual-step-number">1</span>
+                        <h4>Ingreso de Datos</h4>
+                    </div>
+                    <div class="manual-step-content">
+                        <p>Puede ingresar datos de dos formas:</p>
+                        <ul>
+                            <li><strong>Manual:</strong> Escriba los datos separados por comas, espacios o saltos de línea</li>
+                            <li><strong>Archivo:</strong> Suba un archivo CSV, TXT, XLSX o JSON con sesión guardada</li>
+                            <li><strong>Datos Aleatorios:</strong> Use el botón de shuffle para generar datos de ejemplo automáticamente</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="manual-step">
+                    <div class="manual-step-header">
+                        <span class="manual-step-number">2</span>
+                        <h4>Contexto de los Datos (Con IA)</h4>
+                    </div>
+                    <div class="manual-step-content">
+                        <p>Al ingresar datos, aparece un campo de contexto opcional:</p>
+                        <ul>
+                            <li><strong>Generación Manual:</strong> Escriba una descripción de qué representan sus datos</li>
+                            <li><strong>Generación con IA:</strong> Haga clic en "Generar con IA" para que la inteligencia artificial cree un contexto realista basado en sus datos</li>
+                            <li>El contexto mejora la calidad del análisis y las conclusiones generadas</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="manual-step">
+                    <div class="manual-step-header">
+                        <span class="manual-step-number">3</span>
+                        <h4>Tipo de Datos</h4>
+                    </div>
+                    <div class="manual-step-content">
+                        <p>La aplicación detecta automáticamente:</p>
+                        <ul>
+                            <li><strong>Cuantitativos:</strong> Números (discretos o continuos)</li>
+                            <li><strong>Cualitativos:</strong> Texto (nominales u ordinales)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="manual-step">
+                    <div class="manual-step-header">
+                        <span class="manual-step-number">4</span>
+                        <h4>Resultados</h4>
+                    </div>
+                    <div class="manual-step-content">
+                        <p>Obtenga estadísticas descriptivas completas: Media, mediana, moda, rango, varianza y desviación estándar. Haga clic en los íconos de flecha para ver detalles de cada cálculo.</p>
+                    </div>
+                </div>
+                
+                <div class="manual-step">
+                    <div class="manual-step-header">
+                        <span class="manual-step-number">5</span>
+                        <h4>Análisis con IA</h4>
+                    </div>
+                    <div class="manual-step-content">
+                        <p>Después de ejecutar el análisis, verá conclusiones generadas automáticamente:</p>
+                        <ul>
+                            <li><strong>Conclusiones Básicas:</strong> Resumen de las medidas calculadas</li>
+                            <li><strong>Análisis con IA:</strong> Interpretación narrativa detallada que explica patrones, frecuencias y tendencias en sus datos</li>
+                            <li>La IA contextualiza los resultados con el escenario que proporcionó o generó</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="manual-step">
+                    <div class="manual-step-header">
+                        <span class="manual-step-number">6</span>
+                        <h4>Visualizaciones</h4>
+                    </div>
+                    <div class="manual-step-content">
+                        <p>Explore representaciones gráficas interactivas:</p>
+                        <ul>
+                            <li><strong>Histograma:</strong> Visualiza la distribución de frecuencias</li>
+                            <li><strong>Gráfico Circular:</strong> Muestra proporciones de cada categoría o valor</li>
+                            <li><strong>Diagrama de Caja:</strong> Representa cuartiles, mediana y valores atípicos</li>
+                            <li><strong>Tabla de Frecuencia:</strong> Detalle numérico de frecuencias absolutas y relativas</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="manual-step">
+                    <div class="manual-step-header">
+                        <span class="manual-step-number">7</span>
+                        <h4>Asistente Chatbot con IA</h4>
+                    </div>
+                    <div class="manual-step-content">
+                        <p>Use el chatbot inteligente en la esquina inferior derecha:</p>
+                        <ul>
+                            <li><strong>Contexto Automático:</strong> El chatbot conoce el análisis que acaba de realizar</li>
+                            <li><strong>Consultas Personalizadas:</strong> Pregunte sobre sus datos, estadísticas o interpretaciones</li>
+                            <li><strong>Ayuda Interactiva:</strong> Solicite explicaciones, comparaciones o conclusiones adicionales</li>
+                            <li>Ejemplo: "Hazme una conclusión sobre mi información" o "¿Qué significa la desviación estándar en mis datos?"</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="manual-step">
+                    <div class="manual-step-header">
+                        <span class="manual-step-number">8</span>
+                        <h4>Exportar Informe PDF</h4>
+                    </div>
+                    <div class="manual-step-content">
+                        <p>Después de ejecutar un análisis, puede exportar un informe ejecutivo profesional:</p>
+                        <ul>
+                            <li><strong>Cómo exportar:</strong> Haga clic en el botón "Exportar PDF" en la vista de resultados</li>
+                            <li><strong>Ubicación:</strong> El PDF se descarga automáticamente en su carpeta de descargas</li>
+                            <li><strong>Nombre del archivo:</strong> Se genera con formato "analisis-estadistico-[fecha].pdf"</li>
+                        </ul>
+                        <p style="margin-top: 0.8rem;">El informe PDF ejecutivo incluye:</p>
+                        <ul>
+                            <li>Portada profesional con título y fecha</li>
+                            <li>Contexto y descripción de los datos analizados</li>
+                            <li>Datos originales completos</li>
+                            <li>Tipo de dato detectado</li>
+                            <li>Tabla de estadísticas descriptivas (media, mediana, moda, rango, varianza, desviación estándar)</li>
+                            <li>Visualizaciones gráficas de alta calidad (histograma, gráfico circular, diagrama de caja)</li>
+                            <li>Tabla de frecuencias completa con valores absolutos, relativos y acumulados</li>
+                            <li>Análisis detallado generado con IA</li>
+                            <li>Numeración de páginas automática</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-chat-bubble">
+            <button class="ai-chat-toggle" onclick="toggleAIChat()" id="ai-chat-toggle">
+                <i class="fa-solid fa-comments"></i>
+            </button>
+        </div>
+
+        <div class="ai-chat-window" id="ai-chat-window">
+            <div class="ai-chat-header">
+                <h3>Asistente de IA</h3>
+                <button class="ai-chat-close" onclick="toggleAIChat()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="ai-chat-messages" id="ai-chat-messages">
+                <div class="ai-message bot">
+                    <div class="ai-message-avatar">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="ai-message-content">
+                        Hola, soy tu asistente de estadística. Puedo ayudarte a entender cómo usar esta aplicación y a interpretar tus resultados. ¿En qué puedo ayudarte?
+                    </div>
+                </div>
+            </div>
+            <div class="ai-chat-input-area">
+                <div class="ai-chat-input-wrapper">
+                    <input 
+                        type="text" 
+                        class="ai-chat-input" 
+                        id="ai-chat-input" 
+                        placeholder="Escribe tu pregunta..."
+                        onkeypress="handleChatKeyPress(event)"
+                    >
+                    <button class="ai-chat-send" onclick="sendChatMessage()" id="ai-chat-send">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs-plugin-zoom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@sgratzl/chartjs-chart-boxplot@4.4.0/build/index.umd.min.js"></script>
+    
+    <script src="js/statistics.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/ai-integration.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
